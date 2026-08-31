@@ -1,4 +1,5 @@
 const { execFile } = require('node:child_process')
+const http = require('node:http')
 const path = require('node:path')
 const mineflayer = require('mineflayer')
 
@@ -11,6 +12,27 @@ let bot
 let reconnectTimer
 let stopped = false
 let lastReason = 'Connection lost'
+
+function startHealthServer() {
+  const port = Number.parseInt(process.env.PORT, 10)
+  if (!Number.isInteger(port) || port < 1 || port > 65_535) return
+
+  const host = process.env.HOST || '0.0.0.0'
+  const server = http.createServer((request, response) => {
+    response.writeHead(200, {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store',
+    })
+    response.end(JSON.stringify({
+      service: 'donutsmp-afk',
+      running: !stopped,
+      connected: Boolean(bot?.player),
+    }))
+  })
+
+  server.listen(port, host, () => log(`Health server listening on ${host}:${port}`))
+  server.on('error', (error) => log(`Health server error: ${error.message}`))
+}
 
 function log(message) {
   console.log(`[${new Date().toLocaleTimeString()}] ${message}`)
@@ -91,4 +113,5 @@ function stop() {
 process.once('SIGINT', stop)
 process.once('SIGTERM', stop)
 
+startHealthServer()
 connect()

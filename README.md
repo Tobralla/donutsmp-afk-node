@@ -3,14 +3,18 @@
 A small Mineflayer bot that connects a Microsoft Minecraft account to
 `donutsmp.net`. It disables physics and blocks outgoing movement packets.
 
-## Import into a hosting service
+## Import into Hostless or another hosting service
 
-Import this GitHub repository and configure it as a **background worker**:
+Import this GitHub repository as a normal **web app**:
 
 - Runtime: Node.js 22 or newer
 - Install command: `npm ci`
 - Start command: `npm start`
 - Optional environment variable: `MINECRAFT_VERSION=1.21.11`
+
+The bot automatically opens the host's assigned `PORT` and serves a small JSON
+status response so TCP or HTTP health checks pass. If the platform does not set
+`PORT`, the health server stays disabled.
 
 Open the deployment logs after its first start. Follow the Microsoft device-code
 login link printed there. Never upload or commit the generated `auth-cache`
