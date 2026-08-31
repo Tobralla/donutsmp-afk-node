@@ -1,0 +1,19 @@
+{
+  "name": "donutsmp-afk-node",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Simple Mineflayer AFK connection for DonutSMP",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "mineflayer": "^4.33.0"
+  },
+  "overrides": {
+    "uuid": "11.1.1"
+  }
+}
